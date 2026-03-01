@@ -55,13 +55,6 @@ def get_words_for_pattern(source, pattern, invalid_chars, invalid_char_pos):
                     res.append(word)
     return res
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--word", type=str)
-parser.add_argument("--pattern", type=str)
-parser.add_argument("--invalid-char", type=str)
-parser.add_argument("--invalid-posn", type=str)
-args = parser.parse_args()
-
 def calculate_i_gain(counts):
     total = sum(counts)
     gain = 0
@@ -89,22 +82,27 @@ def calculate_expected_gain(word, pattern, invalid_chars="", invalid_char_pos=[]
         word_gain_map[word] = gain
     return word_gain_map
 
-invalid_posn = []
-if args.invalid_posn:
-    for i in range(0, len(args.invalid_posn), 2):
-        invalid_posn.append([int(args.invalid_posn[i]), str(args.invalid_posn[i+1])])
 
-invalid_char = args.invalid_char if args.invalid_char else ""
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--word", type=str)
+    parser.add_argument("--pattern", type=str)
+    parser.add_argument("--invalid-char", type=str)
+    parser.add_argument("--invalid-posn", type=str)
+    args = parser.parse_args()
 
-word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
-list_of_gains = [[g,w] for w, g in word_gain_map.items()]
-list_of_gains.sort(reverse=True)
-for i in range(min(10, len(list_of_gains))):
-    print(list_of_gains[i])
-# for i in list_of_gains:
-#     print(i)
+    invalid_posn = []
+    if args.invalid_posn:
+        for i in range(0, len(args.invalid_posn), 2):
+            invalid_posn.append([int(args.invalid_posn[i]), str(args.invalid_posn[i+1])])
 
+    invalid_char = args.invalid_char if args.invalid_char else ""
 
+    word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
+    list_of_gains = [[g,w] for w, g in word_gain_map.items()]
+    list_of_gains.sort(reverse=True)
+    for i in range(min(10, len(list_of_gains))):
+        print(list_of_gains[i])
 
 
 
