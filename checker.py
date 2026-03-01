@@ -34,22 +34,32 @@ def get_list_for_a_word(word):
         res[index] += 1
     return res
 
-def get_words_for_pattern(source, pattern, invalid_chars):
+def get_words_for_pattern(source, pattern, invalid_chars, invalid_char_pos):
     res = []
+    # all_words = ['devil']
     for word in all_words:
         if correctness(word, source) == pattern:
             w = str(word)
-            for i in pattern:
-                if i != 3:
-                    w = w.replace(source[pattern.index(i)], "", 1)
+            for i in range(len(pattern)):
+                if pattern[i] != 3:
+                    # print(i, pattern.index(i), source[pattern.index(i)], source[i])
+                    w = w.replace(source[i], "", 1)
+
+            # print(all_words)
+            # print(w)
             if all ([c not in w for c in invalid_chars]):
-                res.append(word)
+                for pos, char in invalid_char_pos:
+                    if word[pos] == char:
+                        break
+                else:
+                    res.append(word)
     return res
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--w", type=str)
-parser.add_argument("--p", type=str)
-parser.add_argument("--i", type=str)
+parser.add_argument("--word", type=str)
+parser.add_argument("--pattern", type=str)
+parser.add_argument("--invalid-char", type=str)
+parser.add_argument("--invalid-posn", type=str)
 args = parser.parse_args()
 
 def calculate_i_gain(counts):
@@ -70,8 +80,8 @@ def get_all_patterns_count(word, allowed_words):
     return final_count
 
 
-def calculate_expected_gain(word, pattern, invalid_chars=""):
-    allowed_words = get_words_for_pattern(word, pattern, invalid_chars)
+def calculate_expected_gain(word, pattern, invalid_chars="", invalid_char_pos=[]):
+    allowed_words = get_words_for_pattern(word, pattern, invalid_chars, invalid_char_pos)
     word_gain_map = {}
     for word in allowed_words:
         counts = get_all_patterns_count(word, allowed_words)
@@ -79,7 +89,12 @@ def calculate_expected_gain(word, pattern, invalid_chars=""):
         word_gain_map[word] = gain
     return word_gain_map
 
-word_gain_map = calculate_expected_gain(args.w, [int(i) for i in args.p], args.i)
+invalid_posn = []
+if args.invalid_posn:
+    for i in range(0, len(args.invalid_posn), 2):
+        invalid_posn.append([int(args.invalid_posn[i]), str(args.invalid_posn[i+1])])
+
+word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], args.invalid_char, invalid_posn)
 list_of_gains = [[g,w] for w, g in word_gain_map.items()]
 list_of_gains.sort(reverse=True)
 for i in range(min(10, len(list_of_gains))):
