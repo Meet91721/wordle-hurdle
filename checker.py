@@ -38,10 +38,11 @@ def get_words_for_pattern(source, pattern, invalid_chars):
     res = []
     for word in all_words:
         if correctness(word, source) == pattern:
-            if invalid_chars:
-                if all([c not in word for c in invalid_chars]):
-                    res.append(word)
-            else:
+            w = str(word)
+            for i in pattern:
+                if i != 3:
+                    w = w.replace(source[pattern.index(i)], "", 1)
+            if all ([c not in w for c in invalid_chars]):
                 res.append(word)
     return res
 
@@ -69,7 +70,7 @@ def get_all_patterns_count(word, allowed_words):
     return final_count
 
 
-def calculate_expected_gain(word, pattern, invalid_chars):
+def calculate_expected_gain(word, pattern, invalid_chars=""):
     allowed_words = get_words_for_pattern(word, pattern, invalid_chars)
     word_gain_map = {}
     for word in allowed_words:
