@@ -94,7 +94,9 @@ if args.invalid_posn:
     for i in range(0, len(args.invalid_posn), 2):
         invalid_posn.append([int(args.invalid_posn[i]), str(args.invalid_posn[i+1])])
 
-word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], args.invalid_char, invalid_posn)
+invalid_char = args.invalid_char if args.invalid_char else ""
+
+word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
 list_of_gains = [[g,w] for w, g in word_gain_map.items()]
 list_of_gains.sort(reverse=True)
 for i in range(min(10, len(list_of_gains))):
