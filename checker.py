@@ -61,7 +61,7 @@ def calculate_i_gain(counts):
     for count in counts:
         if count > 0:
             p = count / total
-            gain -= p * math.log2(p)
+            gain += p * (1-p)
     return gain
 
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
     word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
     list_of_gains = [[g,w] for w, g in word_gain_map.items()]
-    list_of_gains.sort(reverse=True)
+    list_of_gains.sort()
     for i in range(min(10, len(list_of_gains))):
         print(list_of_gains[i])
 
