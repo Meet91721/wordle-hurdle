@@ -30,7 +30,7 @@ def get_index(pattern):
 def get_list_for_a_word(word):
     res = [0 for i in range(len(all_patterns))]
     for compare_word in all_words:
-        index = get_index(correctness(word, compare_word))
+        index = get_index(correctness(compare_word, word))
         res[index] += 1
     return res
 
@@ -82,14 +82,32 @@ def calculate_expected_gain(word, pattern, invalid_chars="", invalid_char_pos=[]
         word_gain_map[word] = gain
     return word_gain_map
 
+def get_best_start_word():
+    start_word_gain_map = {}
+    for word in all_words:
+        counts = get_list_for_a_word(word)
+        gain = calculate_i_gain(counts)
+        start_word_gain_map[word] = gain
+        b = "Processed words " + str(len(start_word_gain_map)) + "/" + str(len(all_words))
+        print (b, end="\r")
+    list_of_gains = [[g,w] for w, g in start_word_gain_map.items()]
+    list_of_gains.sort(reverse=True)
+    for i in range(min(10, len(list_of_gains))):
+        print(list_of_gains[i])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+
+    parser.add_argument("--get-best", type=str)
     parser.add_argument("--word", type=str)
     parser.add_argument("--pattern", type=str)
     parser.add_argument("--invalid-char", type=str)
     parser.add_argument("--invalid-posn", type=str)
     args = parser.parse_args()
+
+    if args.get_best:
+        get_best_start_word()
+        exit(0)
 
     invalid_posn = []
     if args.invalid_posn:
