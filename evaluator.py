@@ -39,13 +39,15 @@ for all_words_i, target_word in enumerate(all_words):
             print(i, j)
         print('===============')
 
-print("Final counts:")
+print("Test Result:")
+print("Start word:", start_word)
 total = sum(counts.values())
+print("Total words:", total)
+print("Final counts:")
 for i,j in counts.items():
     print(i, j)
 
 expected_steps = sum([i*j for i,j in counts.items()]) / total
 print("Expected steps:", expected_steps)
-print("Total words:", total)
 
 
