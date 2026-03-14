@@ -7,7 +7,7 @@ with open("allowed_words.txt") as f:
 
 # all_words = all_words[:200]
 
-start_word = "crane"
+start_word = "fuffy"
 
 for all_words_i, target_word in enumerate(all_words):
     guess_word = str(start_word)

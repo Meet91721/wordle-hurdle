@@ -78,6 +78,7 @@ def calculate_expected_gain(word, pattern, invalid_chars="", invalid_char_pos=[]
     word_gain_map = {}
     for word in allowed_words:
         counts = get_all_patterns_count(word, allowed_words)
+        print(word, len(allowed_words), end="\r")
         gain = calculate_i_gain(counts)
         word_gain_map[word] = gain
     return word_gain_map
@@ -118,7 +119,7 @@ if __name__ == "__main__":
 
     word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
     list_of_gains = [[g,w] for w, g in word_gain_map.items()]
-    list_of_gains.sort()
+    list_of_gains.sort(reverse=True)
     for i in range(min(10, len(list_of_gains))):
         print(list_of_gains[i])
 
