@@ -101,21 +101,14 @@ def get_best_start_word(chars=""):
     list_of_gains.sort(reverse=True)
     if len(chars) > 0:
         selected_word = []
-        first_word_index = 0
-        while len(selected_word) < 2:
-            current_chars = str(chars)
-            if all([c in current_chars for c in list_of_gains[first_word_index][1]]):
-                selected_word = [list_of_gains[first_word_index][1]]
-                for c in list_of_gains[first_word_index][1]:
-                    current_chars = current_chars.replace(c, "", 1)
-                for i in range(first_word_index + 1, len(list_of_gains)):
-                    if all([c in current_chars for c in list_of_gains[i][1]]):
-                        selected_word.append(list_of_gains[i][1])
-                        break
-            first_word_index += 1
-        print(selected_word)
-        print(start_word_gain_map[selected_word[0]], start_word_gain_map[selected_word[1]])
-        print(list_of_gains[0])
+        entropy_sum = 0
+        for i in range(len(list_of_gains)):
+            for j in range(len(list_of_gains)):
+                new_word = list_of_gains[i][1] + list_of_gains[j][1]
+                if all([c in new_word for c in chars]):
+                    if list_of_gains[i][0] + list_of_gains[j][0] > entropy_sum:
+                        selected_word = [list_of_gains[i][1], list_of_gains[j][1]]
+                        entropy_sum = list_of_gains[i][0] + list_of_gains[j][0]
         return selected_word
     else:
         for i in range(min(10, len(list_of_gains))):

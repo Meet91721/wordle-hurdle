@@ -7,7 +7,8 @@ with open("possible_words.txt") as f:
 
 # all_words = all_words[:200]
 
-start_word = ['arose', 'unlit']
+# start_word = ['arose', 'unlit']
+start_word = ['train', 'louse']
 
 def step_information(guess_word, pattern):
     invalid_char = ''

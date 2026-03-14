@@ -1,13 +1,12 @@
 Test Result:
-Start word: ['arose', 'unlit']
+Start word: ['train', 'louse']
 Total words: 2309
 Final counts:
-3 587
-4 1300
-5 351
-1 1
-6 55
-7 11
-8 3
+4 1330
+6 58
+5 347
+3 562
+7 10
 2 1
-Expected steps: 3.962754439151148
+1 1
+Expected steps: 3.967951494153313
