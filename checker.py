@@ -88,7 +88,7 @@ def calculate_expected_gain(word, pattern, invalid_chars, invalid_char_pos, vali
         word_gain_map[word] = gain
     return word_gain_map
 
-def get_best_start_word():
+def get_best_start_word(chars=""):
     start_word_gain_map = {}
     for word in all_words:
         counts = get_list_for_a_word(word)
@@ -96,10 +96,31 @@ def get_best_start_word():
         start_word_gain_map[word] = gain
         b = "Processed words " + str(len(start_word_gain_map)) + "/" + str(len(all_words))
         print (b, end="\r")
+    print()
     list_of_gains = [[g,w] for w, g in start_word_gain_map.items()]
     list_of_gains.sort(reverse=True)
-    for i in range(min(10, len(list_of_gains))):
-        print(list_of_gains[i])
+    if len(chars) > 0:
+        selected_word = []
+        first_word_index = 0
+        while len(selected_word) < 2:
+            current_chars = str(chars)
+            if all([c in current_chars for c in list_of_gains[first_word_index][1]]):
+                selected_word = [list_of_gains[first_word_index][1]]
+                for c in list_of_gains[first_word_index][1]:
+                    current_chars = current_chars.replace(c, "", 1)
+                for i in range(first_word_index + 1, len(list_of_gains)):
+                    if all([c in current_chars for c in list_of_gains[i][1]]):
+                        selected_word.append(list_of_gains[i][1])
+                        break
+            first_word_index += 1
+        print(selected_word)
+        print(start_word_gain_map[selected_word[0]], start_word_gain_map[selected_word[1]])
+        print(list_of_gains[0])
+        return selected_word
+    else:
+        for i in range(min(10, len(list_of_gains))):
+            print(list_of_gains[i])
+        return [list_of_gains[0][1]]
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -112,8 +133,13 @@ if __name__ == "__main__":
     parser.add_argument("--correct-posn", type=str)
     args = parser.parse_args()
 
+    starting_word = []
     if args.get_best:
-        get_best_start_word()
+        if str(args.get_best).lower() and len(str(args.get_best)) == 10:
+            starting_word = get_best_start_word(str(args.get_best))
+        else:
+            starting_word = get_best_start_word()
+        print("Best starting word(s): ", starting_word)
         exit(0)
 
     invalid_posn = []

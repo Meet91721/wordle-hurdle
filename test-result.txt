@@ -1,14 +1,13 @@
 Test Result:
-Start word: raise
+Start word: ['arose', 'unlit']
 Total words: 2309
 Final counts:
-6 48
-4 915
-3 996
-2 131
-5 206
-7 10
-8 2
+3 587
+4 1300
+5 351
 1 1
-Expected steps: 3.6011260285838027
-python3 evaluator.py  32.30s user 0.10s system 99% cpu 32.459 total
+6 55
+7 11
+8 3
+2 1
+Expected steps: 3.962754439151148
