@@ -1,0 +1,14 @@
+Test Result:
+Start word: raise
+Total words: 2309
+Final counts:
+6 41
+4 942
+3 954
+2 131
+5 226
+7 11
+8 3
+1 1
+Expected steps: 3.624945864010394
+python3 evaluator.py  33.59s user 0.33s system 99% cpu 33.970 total

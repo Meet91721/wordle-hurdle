@@ -3,7 +3,8 @@ import random
 import argparse
 
 from server import correctness
-with open("allowed_words.txt") as f:
+
+with open("possible_words.txt") as f:
     all_words = f.read().splitlines()
 
 def generate_all_patterns(index):
