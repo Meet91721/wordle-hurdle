@@ -2,12 +2,12 @@ from checker import correctness, calculate_expected_gain
 
 counts = {}
 
-with open("allowed_words.txt") as f:
+with open("possible_words.txt") as f:
     all_words = f.read().splitlines()
 
 # all_words = all_words[:200]
 
-start_word = "crane"
+start_word = "raise"
 
 for all_words_i, target_word in enumerate(all_words):
     guess_word = str(start_word)
@@ -46,5 +46,6 @@ for i,j in counts.items():
 
 expected_steps = sum([i*j for i,j in counts.items()]) / total
 print("Expected steps:", expected_steps)
+print("Total words:", total)
 
 
