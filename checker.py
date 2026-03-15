@@ -73,15 +73,32 @@ def get_all_patterns_count(word, allowed_words):
         final_count[index] += 1
     return final_count
 
+def depth_first_search(group) -> (str, float):
+    if len(group) == 1:
+        return group[0], 1
+    best_guess = None
+    best_avg_depth = float("inf")
+    for guess in group:
+        pattern_groups = {}
+        for target in group:
+            pattern = correctness(guess, target)
+            pattern = ''.join([str(i) for i in pattern])
+            # print(guess, target, pattern)
+            if pattern not in pattern_groups:
+                pattern_groups[pattern] = []
+            pattern_groups[pattern].append(target)
+        avg_depth = 0
+        for pattern, sub_group in pattern_groups.items():
+            avg_depth += len(sub_group) * depth_first_search(sub_group)[1]
+        avg_depth /= len(group)
+        if avg_depth < best_avg_depth:
+            best_avg_depth = avg_depth
+            best_guess = guess
+    return best_guess, best_avg_depth
 
 def calculate_expected_gain(word, pattern, invalid_chars="", invalid_char_pos=[]):
     allowed_words = get_words_for_pattern(word, pattern, invalid_chars, invalid_char_pos)
-    word_gain_map = {}
-    for word in allowed_words:
-        counts = get_all_patterns_count(word, allowed_words)
-        gain = calculate_i_gain(counts)
-        word_gain_map[word] = gain
-    return word_gain_map
+    return depth_first_search(allowed_words)[0]
 
 def get_best_start_word():
     start_word_gain_map = {}
@@ -117,11 +134,7 @@ if __name__ == "__main__":
 
     invalid_char = args.invalid_char if args.invalid_char else ""
 
-    word_gain_map = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
-    list_of_gains = [[g,w] for w, g in word_gain_map.items()]
-    list_of_gains.sort(reverse=True)
-    for i in range(min(10, len(list_of_gains))):
-        print(list_of_gains[i])
+    prediction = calculate_expected_gain(args.word, [int(i) for i in args.pattern], invalid_char, invalid_posn)
 
 
 

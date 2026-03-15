@@ -23,11 +23,12 @@ for all_words_i, target_word in enumerate(all_words):
                 invalid_char += guess_word[i]
             elif pattern[i] == 1:
                 invalid_posn.append((i, guess_word[i]))
-        word_gain_map = calculate_expected_gain(guess_word, pattern, invalid_char, invalid_posn)
-        list_of_gains = [[g,w] for w, g in word_gain_map.items()]
-        list_of_gains.sort(reverse=True)
+        # word_gain_map = calculate_expected_gain(guess_word, pattern, invalid_char, invalid_posn)
+        # list_of_gains = [[g,w] for w, g in word_gain_map.items()]
+        # list_of_gains.sort(reverse=True)
         # print(list_of_gains[:10])
-        guess_word = list_of_gains[0][1]
+        # guess_word = list_of_gains[0][1]
+        guess_word = calculate_expected_gain(guess_word, pattern, invalid_char, invalid_posn)
         # print(pattern, invalid_char, invalid_posn)
     if steps not in counts:
         counts[steps] = 0
