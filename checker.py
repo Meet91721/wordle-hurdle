@@ -58,11 +58,13 @@ def get_words_for_pattern(source, pattern, invalid_chars, invalid_char_pos):
 
 def calculate_i_gain(counts):
     total = sum(counts)
+    counts_len = len(counts)
+    avg = total / counts_len
     gain = 0
     for count in counts:
         if count > 0:
             p = count / total
-            gain -= p * math.log2(p)
+            gain -= p * (abs(avg - count) / avg)
     return gain
 
 

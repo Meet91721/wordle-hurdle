@@ -1,0 +1,11 @@
+Final counts:
+6 41
+4 942
+3 954
+2 131
+5 226
+7 11
+8 3
+1 1
+Expected steps: 3.624945864010394
+Total words: 2309
